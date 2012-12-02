@@ -1,0 +1,6 @@
+for the swig part:
+Joseph Salini (salini@isir.upmc.fr)
+
+for the C++ Quadratic Solver (see http://quadprog.sourceforge.net/):
+Luca Di Gaspero
+Eric Moyer

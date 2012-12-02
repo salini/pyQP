@@ -1,0 +1,5 @@
+build
+*.pyc
+*.pyo
+pyQP/pyQP.py
+pyQP/pyQP_wrap.cpp
