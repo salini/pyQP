@@ -83,7 +83,7 @@
 
 
 
-    def solve_qp_as_cvxopt(P, q, A, b, G, h):
+    def solve_qp_as_cvxopt(P, q, G, h, A, b):
         """ Solve quadratic problem in the CvxOpt formulation.
         
         It solves the following problem (as defined in the cvxopt package):

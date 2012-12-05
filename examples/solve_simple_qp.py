@@ -81,7 +81,7 @@ G = -array([[1,0],
             [1,1]])
 h = -array([0,0,2])
 
-X = solve_qp_as_cvxopt(P, q, A, b, G, h)
+X = solve_qp_as_cvxopt(P, q, G, h, A, b)
 print X
 
 
