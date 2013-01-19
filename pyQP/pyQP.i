@@ -31,6 +31,23 @@
 %apply (double* ARGOUT_ARRAY1, int DIM1 ) {(double* X, int n_X)};
 
 
+//Management of exceptions raised by QuadProg++
+%include exception.i
+%exception { 
+    try {
+        $action
+    } catch(std::logic_error &e) {
+        std::cout<<e.what()<<std::endl;
+        SWIG_exception(SWIG_RuntimeError, "std::logic_error exception raised form QuadProg++");
+    } catch(std::runtime_error &e) {
+        std::cout<<e.what()<<std::endl;
+        SWIG_exception(SWIG_RuntimeError, "std::runtime_error exception  raised form QuadProg++");
+    } catch (...) {
+        SWIG_exception(SWIG_RuntimeError, "unknown exception!");
+    }
+}
+
+
 %inline
 %{
   void _solve_quadprog(double* G,  int Grow,  int Gcol,
@@ -100,7 +117,8 @@
         ce0  = np.ascontiguousarray(-np.asanyarray(b),   dtype=np.float64)
         CI_T = np.ascontiguousarray(-np.asanyarray(G).T, dtype=np.float64)
         ci0  = np.ascontiguousarray(h, dtype=np.float64)
-        return _solve_quadprog(P, q, CE_T, ce0, CI_T, ci0, q.shape[0])
+        x =  _solve_quadprog(P, q, CE_T, ce0, CI_T, ci0, q.shape[0])
+        return x
 
 }
 
