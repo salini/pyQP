@@ -22,10 +22,10 @@
 %}
 
 
-%apply (double* INPLACE_ARRAY1, int DIM1) {(double* g0,   int n_g0),
+%apply (double* IN_ARRAY1, int DIM1) {(double* g0,   int n_g0),
                                            (double* ce0, int n_ce0),
                                            (double* ci0, int n_ci0)};
-%apply (double* INPLACE_ARRAY2, int DIM1, int DIM2) {(double* G,  int Grow,  int Gcol),
+%apply (double* IN_ARRAY2, int DIM1, int DIM2) {(double* G,  int Grow,  int Gcol),
                                                      (double* CE, int CErow, int CEcol),
                                                      (double* CI, int CIrow, int CIcol)};
 %apply (double* ARGOUT_ARRAY1, int DIM1 ) {(double* X, int n_X)};
@@ -89,14 +89,7 @@
             s.t.:   CE x + ce0 =  0
                     CI x + ci0 >= 0
         """
-        import numpy as np
-        _G    = np.ascontiguousarray(G,  dtype=np.float64)
-        _g0   = np.ascontiguousarray(g0, dtype=np.float64)
-        _CE_T = np.ascontiguousarray(CE_T, dtype=np.float64)
-        _ce0  = np.ascontiguousarray(ce0,  dtype=np.float64)
-        _CI_T = np.ascontiguousarray(CI_T, dtype=np.float64)
-        _ci0  = np.ascontiguousarray(ci0,  dtype=np.float64)
-        return _solve_quadprog(_G, _g0, _CE_T, _ce0, _CI_T, _ci0, _g0.shape[0])
+        return _solve_quadprog(G, g0, CE_T, ce0, CI_T, ci0, g0.shape[0])
 
 
 
@@ -111,12 +104,11 @@
                     G x <= h
         """
         import numpy as np
-        P    = np.ascontiguousarray(P, dtype=np.float64)
-        q    = np.ascontiguousarray(q, dtype=np.float64)
-        CE_T = np.ascontiguousarray(np.asanyarray(A).T,  dtype=np.float64)
-        ce0  = np.ascontiguousarray(-np.asanyarray(b),   dtype=np.float64)
-        CI_T = np.ascontiguousarray(-np.asanyarray(G).T, dtype=np.float64)
-        ci0  = np.ascontiguousarray(h, dtype=np.float64)
+
+        CE_T = A.T
+        ce0  = -b
+        CI_T = -G.T
+        ci0  = h
         x =  _solve_quadprog(P, q, CE_T, ce0, CI_T, ci0, q.shape[0])
         return x
 
