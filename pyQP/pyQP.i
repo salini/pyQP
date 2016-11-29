@@ -89,7 +89,8 @@
             s.t.:   CE x + ce0 =  0
                     CI x + ci0 >= 0
         """
-        return _solve_quadprog(G, g0, CE_T, ce0, CI_T, ci0, g0.shape[0])
+        import numpy as np
+        return _solve_quadprog(G, g0, CE_T, ce0, CI_T, ci0, np.asarray(g0).shape[0])
 
 
 
@@ -105,11 +106,11 @@
         """
         import numpy as np
 
-        CE_T = A.T
-        ce0  = -b
-        CI_T = -G.T
-        ci0  = h
-        x =  _solve_quadprog(P, q, CE_T, ce0, CI_T, ci0, q.shape[0])
+        CE_T =  np.asarray(A).T
+        ce0  = -np.asarray(b)
+        CI_T = -np.asarray(G).T
+        ci0  =  np.asarray(h)
+        x    =  _solve_quadprog(P, q, CE_T, ce0, CI_T, ci0, np.asarray(q).shape[0])
         return x
 
 }
